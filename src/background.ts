@@ -19,7 +19,7 @@ async function summarizeWithGPT3(toSummarize: string) {
       "OpenAI-Organization": `${orgKey}`,
       "Content-Type": "application/json",
     }),
-    body: `{ "model": "text-davinci-002", "max_tokens": 1024, "prompt": "Summarize the following: ${toSummarize}"}`,
+    body: `{ "model": "text-davinci-002", "max_tokens": 1024, "temperature": 0.7, "top_p": 1.0, "prompt": "Summarize this for a third-grade student: ${toSummarize}"}`,
   });
   let body;
   if (response.status == 200) {
@@ -52,7 +52,7 @@ async function updateDOM(summarized: string) {
       // This is a hacky way of making this work
       // Basically the content script can't take in the summarized text as a parameter
       // So it needs to be passed as a message, but the message can't be sent until the content script has initialized
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       await chrome.tabs.sendMessage(tabId, { info: summarized }, () => {});
     }
   );
