@@ -1,5 +1,3 @@
-import * as DOMPurify from "dompurify";
-
 async function summarizeWithGPT3(toSummarize: string) {
   const orgKey = (await chrome.storage.sync.get())["open_ai_org"];
   const apiKey = (await chrome.storage.sync.get())["open_ai_key"];
@@ -11,7 +9,6 @@ async function summarizeWithGPT3(toSummarize: string) {
   }
 
   // Using fetch instead of the OpenAI client because Chrome is picky about what runs in background scripts
-  //
   const response = await fetch("https://api.openai.com/v1/completions", {
     method: "POST",
     headers: new Headers({
@@ -34,7 +31,6 @@ async function summarizeWithGPT3(toSummarize: string) {
   }
 
   const text = body.choices[0].text || unableToSummarize;
-  // Don't want to accidentally XSS yourself with OpenAI
   return text;
 }
 
